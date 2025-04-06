@@ -1,7 +1,7 @@
 import DGCharts
 
 /// `IMarker` protokolünü eski versiyonlardaki gibi tanımlıyoruz.
-public protocol IMarker {
+@objc public protocol IMarker {
     /// Grafikte kullanılacak `ChartViewBase` referansı.
     var chartView: ChartViewBase? { get set }
 

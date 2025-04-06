@@ -17,8 +17,7 @@ struct AnimationEntity {
   let yAxisEasing:String
   }
 
-@objc(LineChartSpecView)
-public class LineChartSpecView: UIView, ChartViewDelegate {
+@objc public class LineChartSpecView: UIView, ChartViewDelegate {
   private var chartView: LineChartView!
   private var lineChartData: LineChartData!
   private var limitLabel: UILabel!

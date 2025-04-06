@@ -1,13 +1,14 @@
- 
 import Foundation
+import DGCharts
+import React
 
-@objc(LineChartSpecViewManager)
-public class LineChartSpecViewManager: RCTViewManager {
-    override func view() -> UIView! {
-        return LineChartSpecView()
-    }
+@objcMembers
+public class LineChartViewManager: RCTViewManager {
+   override public func view() -> UIView! {
+       return LineChartSpecView()
+   }
 
-    override static func requiresMainQueueSetup() -> Bool {
-        return true
-    }
+   override public static func requiresMainQueueSetup() -> Bool {
+       return true
+   }
 }

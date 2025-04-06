@@ -8,7 +8,12 @@
 #import <react/renderer/components/LineChartSpec/Props.h>
 #import <react/renderer/components/LineChartSpec/RCTComponentViewHelpers.h>
 
+#if __has_include(<LineChart/LineChart-Swift.h>)
+#import <LineChart/LineChart-Swift.h>
+#else
 #import "LineChart-Swift.h"
+#endif
+
 
 
 using namespace facebook::react;

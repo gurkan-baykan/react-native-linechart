@@ -2,8 +2,8 @@
 import UIKit
 #endif
 
-public extension UIColor {
-    convenience init?(hex: String) {
+@objc public extension UIColor {
+    @objc convenience init?(hex: String) {
         var hexString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         
         if hexString.hasPrefix("#") {

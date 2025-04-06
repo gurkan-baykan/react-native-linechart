@@ -9,8 +9,8 @@
 import DGCharts
 import Foundation
 
-@objc public class IntAxisValueFormatter: NSObject {
-    public func stringForValue(_ value: Double, axis _: AxisBase?) -> String {
+@objc public class IntAxisValueFormatter: NSObject, AxisValueFormatter {
+    @objc public func stringForValue(_ value: Double, axis _: AxisBase?) -> String {
         return "\(Int(value))"
     }
 }

@@ -1,7 +1,7 @@
 import DGCharts
 import Foundation
 
-public class DateValueFormatter: NSObject {
+@objc public class DateValueFormatter: NSObject, AxisValueFormatter {
     private let dateFormatter = DateFormatter()
 
     override init() {
@@ -9,7 +9,7 @@ public class DateValueFormatter: NSObject {
         dateFormatter.dateFormat = "dd MMM HH:mm"
     }
 
-    public func stringForValue(_ value: Double, axis _: AxisBase?) -> String {
+    @objc public func stringForValue(_ value: Double, axis _: AxisBase?) -> String {
         return dateFormatter.string(from: Date(timeIntervalSince1970: value))
     }
 }
