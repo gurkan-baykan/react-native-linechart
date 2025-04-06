@@ -5,8 +5,8 @@
 //  Created by Gürkan on 24.01.2025.
 //
 
-#ifndef LineChart_Bridging_Header_h
-#define LineChart_Bridging_Header_h
+#ifndef ReactNativeLineChartNative_Bridging_Header_h
+#define ReactNativeLineChartNative_Bridging_Header_h
 
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
@@ -20,4 +20,4 @@
 @protocol ChartViewDelegate;
 @protocol AxisValueFormatter;
 
-#endif /* LineChart_Bridging_Header_h */
+#endif /* ReactNativeLineChartNative_Bridging_Header_h */

@@ -3,7 +3,7 @@ require "json"
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
 Pod::Spec.new do |s|
-  s.name         = "LineChart"
+  s.name         = "ReactNativeLineChartNative"
   s.version      = package["version"]
   s.summary      = package["description"]
   s.homepage     = package["homepage"]
@@ -18,8 +18,8 @@ Pod::Spec.new do |s|
     "cpp/**/*.{h,cpp}"
   ]
   
-  s.module_name = "LineChart"
-  s.module_map = "ios/module.modulemap"
+
+
   
   s.dependency "React"
   s.dependency "React-Core"
