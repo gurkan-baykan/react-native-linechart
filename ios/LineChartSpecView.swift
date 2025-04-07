@@ -16,12 +16,14 @@ struct AnimationEntity {
   let xAxisEasing: String
   let yAxisEasing:String
   }
-
-@objc public class LineChartSpecView: UIView, ChartViewDelegate {
+    
+ @objc(LineChartSpecView)
+  public class LineChartSpecView: UIView {
   private var chartView: LineChartView!
   private var lineChartData: LineChartData!
   private var limitLabel: UILabel!
-  
+  private var chartDelegate: ChartViewHandler!
+      
   override public init(frame: CGRect) {
     super.init(frame: frame)
     setupChartView()
@@ -36,7 +38,7 @@ struct AnimationEntity {
   
   private func setupChartView() {
     chartView = LineChartView(frame: bounds)
-    chartView.delegate = self
+    chartView.delegate = chartDelegate
     chartView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     addSubview(chartView)
     

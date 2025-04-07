@@ -8,8 +8,13 @@
 #import <react/renderer/components/LineChartSpec/Props.h>
 #import <react/renderer/components/LineChartSpec/RCTComponentViewHelpers.h>
 
-#import "ReactNativeLineChartNative-Swift.h"
+#import "RCTFabricComponentsPlugins.h"
 
+#if __has_include(<ReactNativeLineChartNative/ReactNativeLineChartNative-Swift.h>)
+#import <ReactNativeLineChartNative/ReactNativeLineChartNative-Swift.h>
+#else
+#import "ReactNativeLineChartNative-Swift.h"
+#endif
 
 using namespace facebook::react;
 

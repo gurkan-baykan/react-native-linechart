@@ -1,7 +1,8 @@
 import DGCharts
 import Foundation
 
-@objc public class DateValueFormatter: NSObject, AxisValueFormatter {
+
+@objc public class DateValueFormatter: NSObject {
     private let dateFormatter = DateFormatter()
 
     override init() {
