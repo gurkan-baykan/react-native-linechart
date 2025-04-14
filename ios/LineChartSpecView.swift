@@ -24,8 +24,19 @@ struct AnimationEntity {
   private var limitLabel: UILabel!
   private var chartDelegate: ChartViewHandler!
       
+  override public func layoutSubviews() {
+      super.layoutSubviews()
+      print("LineChartSpecView frame:", frame)
+        print("LineChartSpecView bounds:", bounds)
+      if chartView == nil {
+          setupChartView()
+      }
+  }
+     
   override public init(frame: CGRect) {
+    
     super.init(frame: frame)
+    chartDelegate = ChartViewHandler()
     setupChartView()
   }
   
@@ -37,11 +48,12 @@ struct AnimationEntity {
   }
   
   private func setupChartView() {
-    chartView = LineChartView(frame: bounds)
+    
+    chartView = LineChartView()
     chartView.delegate = chartDelegate
     chartView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     addSubview(chartView)
-    
+      
     chartView.dragEnabled = true
     chartView.setScaleEnabled(false)
     chartView.pinchZoomEnabled = false
@@ -68,7 +80,7 @@ struct AnimationEntity {
     leftAxis.drawGridLinesEnabled = true
     leftAxis.granularityEnabled = false
     leftAxis.axisMinimum = 0
-    leftAxis.axisMaximum = 120
+    //leftAxis.axisMaximum = 120
     leftAxis.yOffset = 30
     leftAxis.xOffset = -10
     leftAxis.labelTextColor = UIColor.red
@@ -85,7 +97,7 @@ struct AnimationEntity {
     limitLabel.isHidden = true
     
     addSubview(limitLabel)
-    
+      
     chartView.data?.setDrawValues(false)
     chartView.notifyDataSetChanged()
     chartView.legend.form = .line
@@ -116,108 +128,119 @@ struct AnimationEntity {
     }
   }
   
-  
-  
   @objc public func setData(_ data: NSDictionary) {
-    guard let dataSetsArray = data["dataSets"] as? [[String: Any]] else {
-      print("Invalid data format for dataSets")
-      return
-    }
-    
-    var chartDataSets: [LineChartDataSet] = []
+   
     chartView.leftAxis.removeAllLimitLines()
-    for (index, dataSetDict) in dataSetsArray.enumerated() {
-      guard let valuesArray = dataSetDict["values"] as? [[String: Any]],
-            let label = dataSetDict["label"] as? String
-      else {
-        continue
-      }
-      
-      let limitLines = dataSetDict["limitLineEntity"] as? [String: Any]
-      let gradientData = dataSetDict["gradientColorsData"] as? NSDictionary
-      let drawHorizontalHighlightIndicatorEnabled = (dataSetDict["drawHorizontalHighlightIndicatorEnabled"] as? Int == 1)
-      let drawVerticalHighlightIndicatorEnabled = (dataSetDict["drawVerticalHighlightIndicatorEnabled"] as? Int == 1)
-      let fromColor = (gradientData?["from"] as? String) ?? "#FFFFFF"
-      let toColor = (gradientData?["to"] as? String) ?? "#000000"
-      let drawValuesEnabled =  (dataSetDict["drawValuesEnabled"] as? Int == 1)
-      
-      let gradientColors = [
-        ChartColorTemplates.colorFromString(fromColor).cgColor,
-        ChartColorTemplates.colorFromString(toColor).cgColor
-      ]
-      
-      let entries = valuesArray.compactMap { valueDict -> ChartDataEntry? in
-        guard let x = valueDict["x"] as? Double,
-              let y = valueDict["y"] as? Double
-        else {
-          return nil
-        }
-        return ChartDataEntry(x: x, y: y)
-      }
-      
-      let dataSet = LineChartDataSet(entries: entries, label: label)
-      
-      if let mode = dataSetDict["mode"] as? String {
-        
-        let chartMode: LineChartDataSet.Mode
-        
-        switch mode {
-        case "cubicBezier":
-          chartMode = .cubicBezier
-        case "stepped":
-          chartMode = .stepped
-        case "linear":
-          chartMode = .linear
-        case "horizontalBezier":
-          chartMode = .horizontalBezier
-        default:
-          chartMode = .linear
-        }
-        
-        dataSet.mode = chartMode
-      }
-      
-      dataSet.axisDependency = .left
-      dataSet.setColor(UIColor.black)
-      dataSet.colors = [NSUIColor.red]
-      dataSet.circleRadius = 5.0
-      dataSet.circleHoleRadius = 2.0
-      dataSet.setCircleColor(.blue)
-      dataSet.drawCirclesEnabled = true
-      
-      let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gradientColors as CFArray, locations: nil)
-      dataSet.fill = LinearGradientFill(gradient: gradient!, angle: 90)
-      dataSet.lineDashLengths = nil
-      dataSet.highlightLineDashLengths = [5, 2.5]
-      dataSet.fillAlpha = 1
-      dataSet.drawFilledEnabled = true
-      dataSet.setColor(.black)
-      dataSet.highlightLineWidth = 2.0
-      dataSet.drawVerticalHighlightIndicatorEnabled =  drawVerticalHighlightIndicatorEnabled
-      dataSet.drawHorizontalHighlightIndicatorEnabled = drawHorizontalHighlightIndicatorEnabled
-      dataSet.valueFont = .systemFont(ofSize: 13)
-      dataSet.highlightColor = UIColor.black
-      dataSet.drawCircleHoleEnabled = false
-      dataSet.fillFormatter = DefaultFillFormatter { _, dataProvider -> CGFloat in
-        return dataProvider.chartYMin ?? 0.0 // Grafik alanının alt sınırını doldurma referansı olarak al
-      }
-      
-      dataSet.lineWidth = 2.0
-      dataSet.circleRadius = 4.0
-      dataSet.drawCirclesEnabled = false
-      dataSet.drawValuesEnabled = drawValuesEnabled
-      
-      if let limitLineEntity = limitLines, !limitLineEntity.isEmpty {
-        configureLimitLine(with: limitLineEntity, dataSet: dataSet)
-      }
-      chartDataSets.append(dataSet)
-    }
     
-    let chartData = LineChartData(dataSets: chartDataSets)
-    chartView.data = chartData
-    chartView.notifyDataSetChanged()
+   guard let dataSetsArray = data["dataSets"] as? [[String: Any]], !dataSetsArray.isEmpty else {
+     print("Invalid or empty data format for dataSets")
+     return
+   }
+   
+   var chartDataSets: [LineChartDataSet] = []
+   
+   for (index, dataSetDict) in dataSetsArray.enumerated() {
+     // Her bir dataSet için null kontrolü
+     guard let valuesArray = dataSetDict["values"] as? [[String: Any]],
+           let label = dataSetDict["label"] as? String,
+           !valuesArray.isEmpty else {
+       print("Invalid data format for dataset \(index)")
+       continue
+     }
+     
+     // Values array'ini güvenli bir şekilde işle
+     var entries: [ChartDataEntry] = []
+     for valueDict in valuesArray {
+       guard let x = valueDict["x"] as? Double,
+             let y = valueDict["y"] as? Double else {
+         continue
+       }
+       entries.append(ChartDataEntry(x: x, y: y))
+     }
+     
+     guard !entries.isEmpty else {
+       print("No valid entries found for dataset \(index)")
+       continue
+     }
+     
+     let dataSet = LineChartDataSet(entries: entries, label: label)
+     
+     let limitLines = dataSetDict["limitLineEntity"] as? [String: Any]
+     let gradientData = dataSetDict["gradientColorsData"] as? NSDictionary
+     let drawHorizontalHighlightIndicatorEnabled = (dataSetDict["drawHorizontalHighlightIndicatorEnabled"] as? Int == 1)
+     let drawVerticalHighlightIndicatorEnabled = (dataSetDict["drawVerticalHighlightIndicatorEnabled"] as? Int == 1)
+     let fromColor = (gradientData?["from"] as? String) ?? "#FFFFFF"
+     let toColor = (gradientData?["to"] as? String) ?? "#000000"
+     let drawValuesEnabled =  (dataSetDict["drawValuesEnabled"] as? Int == 1)
+      
+     let gradientColors = [
+       ChartColorTemplates.colorFromString(fromColor).cgColor,
+       ChartColorTemplates.colorFromString(toColor).cgColor
+     ]
+     
+     if let mode = dataSetDict["mode"] as? String {
+       
+       let chartMode: LineChartDataSet.Mode
+       
+       switch mode {
+       case "cubicBezier":
+         chartMode = .cubicBezier
+       case "stepped":
+         chartMode = .stepped
+       case "linear":
+         chartMode = .linear
+       case "horizontalBezier":
+         chartMode = .horizontalBezier
+       default:
+         chartMode = .linear
+       }
+       
+       dataSet.mode = chartMode
+     }
+     
+     dataSet.axisDependency = .left
+     dataSet.setColor(UIColor.black)
+     dataSet.colors = [NSUIColor.red]
+     dataSet.circleRadius = 5.0
+     dataSet.circleHoleRadius = 2.0
+     dataSet.setCircleColor(.blue)
+     dataSet.drawCirclesEnabled = true
+     
+     let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gradientColors as CFArray, locations: nil)
+     dataSet.fill = LinearGradientFill(gradient: gradient!, angle: 90)
+     dataSet.lineDashLengths = nil
+     dataSet.highlightLineDashLengths = [5, 2.5]
+     dataSet.fillAlpha = 1
+     dataSet.drawFilledEnabled = true
+     dataSet.setColor(.black)
+     dataSet.highlightLineWidth = 2.0
+     dataSet.drawVerticalHighlightIndicatorEnabled =  drawVerticalHighlightIndicatorEnabled
+     dataSet.drawHorizontalHighlightIndicatorEnabled = drawHorizontalHighlightIndicatorEnabled
+     dataSet.valueFont = .systemFont(ofSize: 13)
+     dataSet.highlightColor = UIColor.black
+     dataSet.drawCircleHoleEnabled = false
+     dataSet.fillFormatter = DefaultFillFormatter { _, dataProvider -> CGFloat in
+       return dataProvider.chartYMin ?? 0.0 // Grafik alanının alt sınırını doldurma referansı olarak al
+     }
+     
+     dataSet.lineWidth = 2.0
+     dataSet.circleRadius = 4.0
+     dataSet.drawCirclesEnabled = false
+     dataSet.drawValuesEnabled = drawValuesEnabled
+     
+     if let limitLineEntity = limitLines, !limitLineEntity.isEmpty {
+       configureLimitLine(with: limitLineEntity, dataSet: dataSet)
+     }
+     chartDataSets.append(dataSet)
+   }
+   
+   let chartData = LineChartData(dataSets: chartDataSets)
+      
+   chartView.data = chartData
+    // Data set edilmiş mi?
+   
+   chartView.notifyDataSetChanged()
   }
-  
   
   private func configureLimitLine(with limitLineEntity: [String: Any], dataSet: LineChartDataSet) {
     let lineWidth = limitLineEntity["lineWidth"] as? CGFloat ?? 1.0
@@ -229,8 +252,11 @@ struct AnimationEntity {
     
     if let lastEntry = dataSet.entries.last {
       let limit = lastEntry.y
-      let labelText = limitLineEntity["label"] as? String ?? String(limit)
-      
+        print(limit,"LAST ENTRY",String(limit))
+        let labelText = (limitLineEntity["label"] as? String)?.isEmpty == false
+            ? (limitLineEntity["label"] as! String)
+            : String(limit)
+ 
       let limitLine = ChartLimitLine(limit: limit)
       
       limitLine.lineWidth = lineWidth
@@ -273,9 +299,9 @@ struct AnimationEntity {
       let fontSize = labelFont["size"] as? CGFloat
         
     else {
+        print(xAxisEntity,"yyyy1111")
       return
     }
-    
     
     if let labelPositionString = xAxisEntity["labelPosition"] as? String {
       let labelPosition: XAxis.LabelPosition
@@ -300,10 +326,12 @@ struct AnimationEntity {
     chartView.xAxis.labelTextColor = labelTextColor
     chartView.xAxis.yOffset = yOffset
     chartView.xAxis.xOffset = xAxisEntity["xOffset"] as? CGFloat ?? 0
-    chartView.xAxis.axisMinimum = xAxisEntity["axisMin"] as? CGFloat ?? 0
-    if let axisMax = xAxisEntity["axisMax"] as? CGFloat {
-      chartView.xAxis.axisMaximum = axisMax
-    }
+   
+   chartView.xAxis.axisMinimum = xAxisEntity["axisMin"] as? CGFloat ?? 0
+ 
+   if let axisMax = xAxisEntity["axisMax"] as? CGFloat  {
+     chartView.xAxis.axisMaximum = axisMax
+   }
   }
   
   @objc public func setYAxisEntity(_ yAxisEntity: NSDictionary) {
@@ -322,7 +350,7 @@ struct AnimationEntity {
       return
     }
     
-    
+     
     if let labelPositionString = yAxisEntity["labelPosition"] as? String {
       
       let labelPosition: YAxis.LabelPosition
@@ -338,6 +366,7 @@ struct AnimationEntity {
       
       chartView.leftAxis.labelPosition = labelPosition
     }
+
     chartView.leftAxis.labelFont = .systemFont(ofSize: fontSize, weight: .light)
     chartView.leftAxis.drawLabelsEnabled = drawLabelsEnabled == 1
     chartView.leftAxis.labelTextColor = labelTextColor
@@ -346,75 +375,76 @@ struct AnimationEntity {
     chartView.leftAxis.axisMinimum = yAxisEntity["axisMin"] as? CGFloat ?? 0
     
     if let axisMax = yAxisEntity["axisMax"] as? CGFloat {
+        print("axisMaximum", axisMax);
       chartView.leftAxis.axisMaximum = axisMax
     }
     
   }
   
-  @objc public func setMarkerEntity(_ markerEntity: NSDictionary) {
-    var markerColor: UIColor?
-    var markerTextColor: UIColor?
-    var markerFontSize: CGFloat?
-    var circleColor: UIColor?
-    var size: CGFloat?
-    var top, bottom, left, right: CGFloat?
-    
-    if let markerBgColorString = markerEntity["bgColor"] as? String,
-       let markerTextColorString = markerEntity["color"] as? String,
-       let fontSize = markerEntity["fontSize"] as? CGFloat {
-      markerColor = UIColor(hex: markerBgColorString)
-      markerTextColor = UIColor(hex: markerTextColorString)
-      markerFontSize = fontSize
-    } else {
-      print("❌ Marker renk veya font boyutu eksik!")
-    }
-    
-    if let circleData = markerEntity["circleEntity"] as? [String: Any],
-       let circleSize = circleData["size"] as? CGFloat,
-       let colorString = circleData["color"] as? String {
-      circleColor = UIColor(hex: colorString)
-      size = circleSize
-    } else {
-      print("❌ Circle size veya color eksik!")
-    }
-    
-    if let positionData = markerEntity["position"] as? [String: Any],
-       let pTop = positionData["top"] as? CGFloat,
-       let pBottom = positionData["bottom"] as? CGFloat,
-       let pLeft = positionData["left"] as? CGFloat,
-       let pRight = positionData["right"] as? CGFloat {
-      top = pTop
-      bottom = pBottom
-      left = pLeft
-      right = pRight
-    } else {
-      print("❌ Position değerlerinden biri eksik!")
-    }
-    
-    let finalSize: CGFloat = size ?? 0
-    let finalCircleColor: UIColor = circleColor ?? UIColor.black
-    let circleEntity = CircleEntityStruct(size: finalSize, color: finalCircleColor.cgColor)
-    let finalMarkerColor: UIColor = markerColor ?? UIColor.clear
-    let finalMarkerTextColor = markerTextColor ?? UIColor.black
-    let finalMarkerFontSize = markerFontSize ?? 15
-    let finalTop: CGFloat = top ?? 8
-    let finalBottom:CGFloat = bottom ?? 20
-    let finalLeft = left ?? 8
-    let finalRight = right ?? 8
-    
-//    let marker = BalloonMarker(
-//      circleEntity: circleEntity,
-//      color: finalMarkerColor,
-//      font: .systemFont(ofSize: finalMarkerFontSize),
-//      textColor: finalMarkerTextColor,
-//      insets: UIEdgeInsets(top: finalTop, left: finalLeft, bottom: finalBottom, right: finalRight)
-//    )
-//    
-//    marker.layer.zPosition = 9999
-//    marker.chartView = chartView
-//    chartView.marker = marker
-    
-  }
+ @objc public func setMarkerEntity(_ markerEntity: NSDictionary) {
+   var markerColor: UIColor?
+   var markerTextColor: UIColor?
+   var markerFontSize: CGFloat?
+   var circleColor: UIColor?
+   var size: CGFloat?
+   var top, bottom, left, right: CGFloat?
+     print(markerEntity,"MARKER ENENE")
+   if let markerBgColorString = markerEntity["bgColor"] as? String,
+      let markerTextColorString = markerEntity["color"] as? String,
+      let fontSize = markerEntity["fontSize"] as? CGFloat {
+     markerColor = UIColor(hex: markerBgColorString)
+     markerTextColor = UIColor(hex: markerTextColorString)
+     markerFontSize = fontSize
+   } else {
+     print("❌ Marker renk veya font boyutu eksik!")
+   }
+   
+   if let circleData = markerEntity["circleEntity"] as? [String: Any],
+      let circleSize = circleData["size"] as? CGFloat,
+      let colorString = circleData["color"] as? String {
+     circleColor = UIColor(hex: colorString)
+     size = circleSize
+   } else {
+     print("❌ Circle size veya color eksik!")
+   }
+   
+   if let positionData = markerEntity["position"] as? [String: Any],
+      let pTop = positionData["top"] as? CGFloat,
+      let pBottom = positionData["bottom"] as? CGFloat,
+      let pLeft = positionData["left"] as? CGFloat,
+      let pRight = positionData["right"] as? CGFloat {
+     top = pTop
+     bottom = pBottom
+     left = pLeft
+     right = pRight
+   } else {
+     print("❌ Position değerlerinden biri eksik!")
+   }
+   
+   let finalSize: CGFloat = size ?? 0
+   let finalCircleColor: UIColor = circleColor ?? UIColor.black
+   let circleEntity = CircleEntityStruct(size: finalSize, color: finalCircleColor.cgColor)
+   let finalMarkerColor: UIColor = markerColor ?? UIColor.clear
+   let finalMarkerTextColor = markerTextColor ?? UIColor.black
+   let finalMarkerFontSize = markerFontSize ?? 15
+   let finalTop: CGFloat = top ?? 8
+   let finalBottom:CGFloat = bottom ?? 20
+   let finalLeft = left ?? 8
+   let finalRight = right ?? 8
+   
+   let marker = BalloonMarker(
+     circleEntity: circleEntity,
+     color: finalMarkerColor,
+     font: .systemFont(ofSize: finalMarkerFontSize),
+     textColor: finalMarkerTextColor,
+     insets: UIEdgeInsets(top: finalTop, left: finalLeft, bottom: finalBottom, right: finalRight)
+   )
+   
+   marker.layer.zPosition = 9999
+   marker.chartView = chartView
+   chartView.marker = marker
+   
+ }
   
   @objc public func setDragEnabled(_ dragEnabled: Bool) {
     chartView.dragEnabled = dragEnabled
@@ -436,21 +466,62 @@ struct AnimationEntity {
       return
     }
     
-    chartView.backgroundColor = UIColor(hex: bgColorString as String)
+      chartView.backgroundColor = UIColor(hex: bgColorString as String)
   }
   
   @objc public func setDrawGridLinesEnabled(_ drawGridLinesEnabled: Bool) {
     chartView.leftAxis.drawGridLinesEnabled = drawGridLinesEnabled
   }
   
+  func chartEasingOption(from string: String) -> ChartEasingOption {
+      switch string {
+      case "linear": return .linear
+      case "easeInQuad": return .easeInQuad
+      case "easeOutQuad": return .easeOutQuad
+      case "easeInOutQuad": return .easeInOutQuad
+      case "easeInCubic": return .easeInCubic
+      case "easeOutCubic": return .easeOutCubic
+      case "easeInOutCubic": return .easeInOutCubic
+      case "easeInQuart": return .easeInQuart
+      case "easeOutQuart": return .easeOutQuart
+      case "easeInOutQuart": return .easeInOutQuart
+      case "easeInQuint": return .easeInQuint
+      case "easeOutQuint": return .easeOutQuint
+      case "easeInOutQuint": return .easeInOutQuint
+      case "easeInSine": return .easeInSine
+      case "easeOutSine": return .easeOutSine
+      case "easeInOutSine": return .easeInOutSine
+      case "easeInExpo": return .easeInExpo
+      case "easeOutExpo": return .easeOutExpo
+      case "easeInOutExpo": return .easeInOutExpo
+      case "easeInCirc": return .easeInCirc
+      case "easeOutCirc": return .easeOutCirc
+      case "easeInOutCirc": return .easeInOutCirc
+      case "easeInElastic": return .easeInElastic
+      case "easeOutElastic": return .easeOutElastic
+      case "easeInOutElastic": return .easeInOutElastic
+      case "easeInBack": return .easeInBack
+      case "easeOutBack": return .easeOutBack
+      case "easeInOutBack": return .easeInOutBack
+      case "easeInBounce": return .easeInBounce
+      case "easeOutBounce": return .easeOutBounce
+      case "easeInOutBounce": return .easeInOutBounce
+      default: return .linear
+      }
+  }
+
+
   @objc public func setAnimationEntity(_ animationEntity: [String: Any]) {
     let xAxisDuration = animationEntity["xAxisDuration"] as? CGFloat ?? 0.8
     let yAxisDuration = animationEntity["yAxisDuration"] as? CGFloat ?? 1
-    let xAxisEasing = animationEntity["xAxisEasing"] as? ChartEasingOption ?? ChartEasingOption.linear
-    let yAxisEasing = animationEntity["yAxisEasing"] as? ChartEasingOption ?? ChartEasingOption.linear
-    
-    chartView.animate(xAxisDuration: xAxisDuration,easingOption: xAxisEasing)
-    chartView.animate(yAxisDuration: yAxisDuration, easingOption: yAxisEasing)
+    let xAxisEasing = animationEntity["xAxisEasing"] as? String ?? "linear"
+    let yAxisEasing = animationEntity["yAxisEasing"] as? String ?? "linear"
+
+    let xAxisEasingOption = chartEasingOption(from: xAxisEasing)
+    let yAxisEasingOption = chartEasingOption(from: yAxisEasing)
+
+    chartView.animate(xAxisDuration: xAxisDuration,easingOption: xAxisEasingOption)
+    chartView.animate(yAxisDuration: yAxisDuration, easingOption: yAxisEasingOption)
   }
   
 }

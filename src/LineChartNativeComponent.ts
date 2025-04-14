@@ -1,6 +1,6 @@
 import type { HostComponent, ViewProps } from 'react-native';
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
-import { Int32, Float } from 'react-native/Libraries/Types/CodegenTypes';
+import type { Int32, Float } from 'react-native/Libraries/Types/CodegenTypes';
 
 export interface DataSetEntry {
   x: Int32;
@@ -51,7 +51,7 @@ export interface DataSet {
   drawVerticalHighlightIndicatorEnabled: boolean;
   drawHorizontalHighlightIndicatorEnabled: boolean;
   drawValuesEnabled: boolean;
-  mode: string;
+  mode: string; //Mode
 }
 export interface LineData {
   dataSets: DataSet[];
@@ -63,7 +63,7 @@ export interface AnimationEntity {
   xAxisEasing: string; // you can look ChartEasingOptionProps type here
   yAxisEasing: string; // you can look ChartEasingOptionProps type here
 }
-export interface MarkerEntity {
+export type MarkerEntity = {
   bgColor: string;
   color: string;
   fontSize: Float;
@@ -73,12 +73,12 @@ export interface MarkerEntity {
     bottom: Float;
     right: Float;
   };
-  circleEntity?: CircleEntity;
-}
-export interface CircleEntity {
-  size: Float;
-  color: string;
-}
+  circleEntity: CircleEntity | undefined;
+};
+export type CircleEntity = {
+  size: Float | undefined;
+  color: string | undefined;
+};
 
 export interface LabelFont {
   size: Float;
@@ -130,7 +130,7 @@ export interface NativeProps extends ViewProps {
   bgColor?: string;
   animationEntity?: AnimationEntity;
   drawGridLinesEnabled?: boolean;
-  markerEntity?: MarkerEntity;
+  markerEntity: MarkerEntity | undefined;
   xAxisEntity?: XAxisEntity;
   yAxisEntity?: YAxisEntity;
   highlightPerTapEnabled: boolean;

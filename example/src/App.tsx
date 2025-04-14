@@ -1,12 +1,12 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { LineChartNativeComponent } from 'react-native-linechart-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { LineChartNativeComponent } from '@baykan/react-native-linechart-native';
 
 function App(): JSX.Element {
-  const count = 16;
+  const count = 25;
   const range = 50;
 
-  const count2 = 16;
+  const count2 = 25;
   const range2 = 50;
 
   const values = Array.from({ length: count }, (_, i) => {
@@ -14,10 +14,10 @@ function App(): JSX.Element {
     return { x: i, y: val };
   });
 
-  const values2 = Array.from({ length: count }, (_, i) => {
-    const val = Math.floor(Math.random() * range) + 3;
-    return { x: i, y: val };
-  });
+  // const values2 = Array.from({ length: count }, (_, i) => {
+  //   const val = Math.floor(Math.random() * range) + 3;
+  //   return { x: i, y: val };
+  // });
 
   const lineData = {
     dataSets: [
@@ -28,7 +28,7 @@ function App(): JSX.Element {
         mode: 'linear',
         drawHorizontalHighlightIndicatorEnabled: false,
         gradientColorsData: { from: '#ffffff', to: '#080707' },
-        label: 'Chart',
+        label: 'Chart1',
         limitLineEntity: {
           lineWidth: 2.0,
           lineColor: '#d6371e',
@@ -38,24 +38,6 @@ function App(): JSX.Element {
           fontSize: 15,
           limit: 25,
         },
-      },
-      {
-        limitLineEntity: {
-          lineWidth: 2.0,
-          lineColor: '#00a32c',
-          lineDashLengths: [5, 3],
-          labelPosition: 'leftTop',
-          labelValueColor: '#00a32c',
-          fontSize: 15,
-          limit: 25,
-        },
-        values: values2,
-        drawVerticalHighlightIndicatorEnabled: true,
-        drawValuesEnabled: false,
-        mode: 'linear',
-        drawHorizontalHighlightIndicatorEnabled: false,
-        gradientColorsData: { from: '#ffffff', to: '#080707' },
-        label: '',
       },
     ],
   };
@@ -74,7 +56,7 @@ function App(): JSX.Element {
           data={lineData}
           markerEntity={{
             color: '#161617',
-            fontSize: 16,
+            fontSize: 17,
             bgColor: '#ffffff',
             circleEntity: { size: 15, color: '#1e498f' },
             position: { left: 8, top: 0, bottom: 0, right: 8 },
@@ -84,7 +66,7 @@ function App(): JSX.Element {
             labelPosition: 'bottom',
             labelFont: { size: 15, weight: 'bold' },
             labelTextColor: '#080707',
-            yOffset: 0,
+            yOffset: 10,
             xOffset: 0,
           }}
           yAxisEntity={{
@@ -104,8 +86,6 @@ function App(): JSX.Element {
             yAxisEasing: 'linear',
           }}
           drawGridLinesEnabled={true}
-          highlightPerTapEnabled={true}
-          highlightPerDragEnabled={true}
           dragEnabled={true}
           style={{ width: '100%', height: 500, margin: 16 }}
         />
@@ -120,5 +100,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4f6f8',
   },
 });
-
 export default App;
