@@ -1,4 +1,4 @@
-package com.linechart
+package com.linechartnative
 
 import android.content.Context
 import android.graphics.Color
@@ -14,7 +14,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.linechart.custom.MyMarkerView
+import com.linechartnative.custom.MyMarkerView
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.LimitLine
 
@@ -78,27 +78,36 @@ class LineChartSpecView(context: Context) : LineChart(context) {
 
     fun setChartData(data: Map<String, Any>) {
         try {
-
-            val dataSetsArray = data["dataSets"] as? List<Map<String, Any>> ?: return
+            this.data = null
+            this.clear()
+            this.invalidate()
+            val dataSetsArray = (data["dataSets"] as? List<*>)?.mapNotNull { it as? Map<String, Any> } ?: return
             val chartDataSets = mutableListOf<LineDataSet>()
-
+            this.axisLeft.removeAllLimitLines()
+              
+      Log.d("dataSetsArray", "valuesArray count")
             for (dataSetDict in dataSetsArray) {
+               
                 val drawVerticalHighlightIndicatorEnabled = dataSetDict["drawVerticalHighlightIndicatorEnabled"] as Boolean
                 val drawHorizontalHighlightIndicatorEnabled = dataSetDict["drawHorizontalHighlightIndicatorEnabled"] as Boolean
                 val drawValuesEnabled = dataSetDict["drawValuesEnabled"] as Boolean
-                val gradientData = dataSetDict["gradientColorsData"] as  Map<String, Any>
+                   
+               val gradientData = dataSetDict["gradientColorsData"] as  Map<String, Any>
+                Log.d("valuesArray255", "valuesArray count")
                 val fromColor = gradientData["from"] as? String ?: "#FFFFFF"
                 val toColor = gradientData["to"] as? String ?: "#000000"
+              
+               
                 val limitLines = dataSetDict["limitLineEntity"] as? Map<String, Any>
                 val valuesArray = dataSetDict["values"] as? List<Map<String, Any>> ?: continue
                 val label = dataSetDict["label"] as? String ?: ""
-
+                   
                 val entries = valuesArray.mapNotNull { valueDict ->
                     val x = (valueDict["x"] as? Number)?.toFloat() ?: return@mapNotNull null
                     val y = (valueDict["y"] as? Number)?.toFloat() ?: return@mapNotNull null
                     Entry(x, y)
                 }
-
+              
                 val dataSet = LineDataSet(entries, label).apply {
                     color = Color.parseColor(fromColor)
                     circleRadius = 5f
@@ -116,7 +125,6 @@ class LineChartSpecView(context: Context) : LineChart(context) {
                     val paint = renderer.paintRender
 
                     fillDrawable = getGradientDrawable(fromColor, toColor)
-
                     paint.setShader(gradient)
                     setDrawValues(drawValuesEnabled)
                     setDrawHorizontalHighlightIndicator(drawHorizontalHighlightIndicatorEnabled)
@@ -260,10 +268,10 @@ class LineChartSpecView(context: Context) : LineChart(context) {
     }
 
     fun setMarkerEntity(data: Map<String, Any>) {
-        Log.d("LineChartSpecView", "data geldiiiiii: $data")
+              Log.d("ff5","circleEntit111y  $data")
 
         val mv = MyMarkerView(context, R.layout.my_marker_view,data)
-
+        mv.chartView = this
         this.marker = mv
         this.invalidate()
     }

@@ -1,5 +1,5 @@
-package com.linechart
-
+package com.linechartnative
+import android.view.View
 import android.util.Log
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableMap
@@ -10,15 +10,15 @@ import com.facebook.react.uimanager.ViewManagerDelegate
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.viewmanagers.LineChartSpecViewManagerInterface
 import com.facebook.react.viewmanagers.LineChartSpecViewManagerDelegate
-import com.linechart.LineChartSpecView
+import com.linechartnative.LineChartSpecView
 import org.json.JSONObject
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 
 
-@ReactModule(name = LineChartSpecManager.REACT_CLASS)
-class LineChartSpecManager(context: ReactApplicationContext) :
+@ReactModule(name = LineChartSpecViewManager.REACT_CLASS)
+class LineChartSpecViewManager(context: ReactApplicationContext) :
     SimpleViewManager<LineChartSpecView>(), LineChartSpecViewManagerInterface<LineChartSpecView> {
 
     private val delegate: ViewManagerDelegate<LineChartSpecView> = LineChartSpecViewManagerDelegate(this)
@@ -42,6 +42,7 @@ class LineChartSpecManager(context: ReactApplicationContext) :
             val jsonData = convertReadableMapToJson(value)
             view.setChartData(jsonData)
         } catch (e: Exception) {
+             Log.d("setData", "setData: json verisi error: $value")
             view.emitOnChartError("Error parsing JSON: ${e.message}")
         }
     }

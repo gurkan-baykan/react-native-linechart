@@ -1518,6 +1518,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@baykan/react-native-linechart-native@link:../::locator=react-native-linechart-native-example%40workspace%3Aexample":
+  version: 0.0.0-use.local
+  resolution: "@baykan/react-native-linechart-native@link:../::locator=react-native-linechart-native-example%40workspace%3Aexample"
+  languageName: node
+  linkType: soft
+
 "@baykan/react-native-linechart-native@workspace:.":
   version: 0.0.0-use.local
   resolution: "@baykan/react-native-linechart-native@workspace:."
@@ -10432,6 +10438,7 @@ __metadata:
     "@babel/core": ^7.25.2
     "@babel/preset-env": ^7.25.3
     "@babel/runtime": ^7.25.0
+    "@baykan/react-native-linechart-native": "link:../"
     "@react-native-community/cli": 15.0.1
     "@react-native-community/cli-platform-android": 15.0.1
     "@react-native-community/cli-platform-ios": 15.0.1

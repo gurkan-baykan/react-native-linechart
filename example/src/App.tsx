@@ -4,7 +4,7 @@ import { LineChartNativeComponent } from '@baykan/react-native-linechart-native'
 
 function App(): JSX.Element {
   const count = 25;
-  const range = 50;
+  const range = 60;
 
   const count2 = 25;
   const range2 = 50;
@@ -30,13 +30,13 @@ function App(): JSX.Element {
         gradientColorsData: { from: '#ffffff', to: '#080707' },
         label: 'Chart1',
         limitLineEntity: {
-          lineWidth: 2.0,
+          lineWidth: 3.0,
           lineColor: '#d6371e',
           lineDashLengths: [5, 2],
           labelPosition: 'leftTop',
           labelValueColor: '#d6371e',
           fontSize: 15,
-          limit: 25,
+          limit: 12,
         },
       },
     ],
@@ -58,7 +58,7 @@ function App(): JSX.Element {
             color: '#161617',
             fontSize: 17,
             bgColor: '#ffffff',
-            circleEntity: { size: 15, color: '#1e498f' },
+            circleEntity: { size: 13, color: '#1e498f' },
             position: { left: 8, top: 0, bottom: 0, right: 8 },
           }}
           xAxisEntity={{
@@ -85,6 +85,8 @@ function App(): JSX.Element {
             yAxisDuration: 1,
             yAxisEasing: 'linear',
           }}
+          highlightPerDragEnabled={true}
+          highlightPerTapEnabled={true}
           drawGridLinesEnabled={true}
           dragEnabled={true}
           style={{ width: '100%', height: 500, margin: 16 }}

@@ -1,4 +1,4 @@
-package com.linechart.custom
+package com.linechartnative.custom
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,7 +19,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
-import com.linechart.R;
+import com.linechartnative.R;
 
 
 /**
@@ -42,6 +42,7 @@ class MyMarkerView(context: Context?, layoutResource: Int, private val data: Map
     }
 
     private fun applyStyles() {
+      
         val fontColor = (data["color"] as? String)?.let { Color.parseColor(it) } ?: Color.BLACK
         textView.setTextColor(fontColor)
         val size = data["fontSize"]
@@ -52,14 +53,16 @@ class MyMarkerView(context: Context?, layoutResource: Int, private val data: Map
         }
 
         textView.textSize = fontSize
-
+          
         val bgColor = (data["bgColor"] as? String)?.let { Color.parseColor(it) } ?: Color.WHITE
         this.setBackgroundColor(bgColor)
     }
 
     override fun draw(canvas: Canvas, posX: Float, posY: Float) {
+         Log.d("554442","circleEntit111y  ")
         val circleEntity = data["circleEntity"] as? Map<String, Any> ?: emptyMap()
-
+       
+        
         val circleSize = (circleEntity["size"] as? Number)?.toFloat() ?: 20f
         val circleColor = (circleEntity["color"] as? String)?.let { parseColor(it) } ?: android.graphics.Color.BLACK
 

@@ -43,7 +43,6 @@ struct AnimationEntity {
   required init?(coder: NSCoder) {
     super.init(coder: coder)
     
-    
     setupChartView()
   }
   
@@ -237,8 +236,7 @@ struct AnimationEntity {
    let chartData = LineChartData(dataSets: chartDataSets)
       
    chartView.data = chartData
-    // Data set edilmiş mi?
-   
+
    chartView.notifyDataSetChanged()
   }
   

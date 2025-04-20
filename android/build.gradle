@@ -10,6 +10,8 @@ buildscript {
 
   dependencies {
     classpath "com.android.tools.build:gradle:8.7.2"
+    classpath("com.facebook.react:react-native-gradle-plugin")
+      
     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefault('kotlinVersion')}"
   }
@@ -74,8 +76,7 @@ android {
   sourceSets {
     main {
       java.srcDirs += [
-        "generated/java",
-        "generated/jni"
+       'src/main/kotlin'
       ]
     }
   }
@@ -90,11 +91,16 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {
   implementation "com.facebook.react:react-android"
+  implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+  implementation 'com.google.code.gson:gson:2.10.1'
+  implementation 'androidx.constraintlayout:constraintlayout-compose-android:1.1.1'
+  implementation 'androidx.compose.animation:animation-core-android:1.7.8'
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 react {
   jsRootDir = file("../src/")
-  libraryName = "LinechartNativeView"
+  codegenDir = file("$projectDir/android/generated")
+  libraryName = "LineChartSpec"
   codegenJavaPackageName = "com.linechartnative"
 }
