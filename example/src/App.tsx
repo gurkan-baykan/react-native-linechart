@@ -1,23 +1,14 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { LineChartNativeComponent } from '@baykan/react-native-linechart-native';
 
 function App(): JSX.Element {
   const count = 25;
   const range = 60;
 
-  const count2 = 25;
-  const range2 = 50;
-
   const values = Array.from({ length: count }, (_, i) => {
     const val = Math.floor(Math.random() * range) + 3;
     return { x: i, y: val };
   });
-
-  // const values2 = Array.from({ length: count }, (_, i) => {
-  //   const val = Math.floor(Math.random() * range) + 3;
-  //   return { x: i, y: val };
-  // });
 
   const lineData = {
     dataSets: [

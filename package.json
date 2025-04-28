@@ -39,6 +39,7 @@
   "scripts": {
     "example": "yarn workspace react-native-linechart-native-example",
     "test": "jest",
+    "build": "tsc",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
@@ -188,6 +189,10 @@
     "name": "LineChartSpec",
     "type": "components",
     "jsSrcsDir": "src",
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
+    },
     "android": {
       "javaPackageName": "com.linechart"
     }
