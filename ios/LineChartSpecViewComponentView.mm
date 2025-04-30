@@ -4,10 +4,10 @@
 #import <React/RCTConversions.h>
 #import <React/RCTViewManager.h>
 
-#import <react/renderer/components/LineChartSpec/ComponentDescriptors.h>
-#import <react/renderer/components/LineChartSpec/EventEmitters.h>
-#import <react/renderer/components/LineChartSpec/Props.h>
-#import <react/renderer/components/LineChartSpec/RCTComponentViewHelpers.h>
+#import "generated/LineChartSpec/ComponentDescriptors.h"
+#import "generated/LineChartSpec/EventEmitters.h"
+#import "generated/LineChartSpec/Props.h"
+#import "generated/LineChartSpec/RCTComponentViewHelpers.h"
 
 #if __has_include(<ReactNativeLineChartNative/ReactNativeLineChartNative-Swift.h>)
 #import <ReactNativeLineChartNative/ReactNativeLineChartNative-Swift.h>
