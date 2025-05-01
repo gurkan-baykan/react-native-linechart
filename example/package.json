@@ -12,7 +12,7 @@
   "dependencies": {
     "@baykan/react-native-linechart-native": "link:../",
     "react": "19.0.0",
-    "react-native": "0.78.1"
+    "react-native": "^0.78.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

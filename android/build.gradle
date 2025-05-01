@@ -54,9 +54,6 @@ android {
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
   }
 
-  buildFeatures {
-    buildConfig true
-  }
 
   buildTypes {
     release {
