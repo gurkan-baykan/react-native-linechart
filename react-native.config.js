@@ -8,5 +8,14 @@ module.exports = {
         cmakeListsPath: "build/android/generated/source/codegen/jni/CMakeLists.txt",
       },
     },
+    codegenConfig: {
+      name: 'LineChartSpec',
+      type: 'components',
+      supportedSpecs: {
+        LineChart: {
+          file: 'src/LineChartNativeComponent.ts',
+        },
+      },
+    },
   },
 };

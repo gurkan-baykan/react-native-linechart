@@ -15,7 +15,8 @@ Pod::Spec.new do |s|
 
   s.source_files = [
     "ios/**/*.{h,c,cc,cpp,m,mm,swift}",  
-    "cpp/**/*.{h,cpp}"
+    "cpp/**/*.{h,cpp}",
+    "ios/generated/build/generated/ios/**/*.{h,cpp,mm}"
   ]
   
   s.dependency "React"
@@ -33,7 +34,7 @@ Pod::Spec.new do |s|
    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
    'DEFINES_MODULE' => 'YES',
     'SWIFT_OBJC_INTERFACE_HEADER_NAME' => 'ReactNativeLineChartNative-Swift.h',
-    "HEADER_SEARCH_PATHS" => '"$(PODS_TARGET_SRCROOT)/cpp/"/**',
+    "HEADER_SEARCH_PATHS" => '"$(PODS_TARGET_SRCROOT)/cpp/**" "$(PODS_TARGET_SRCROOT)/ios/generated/build/generated/ios/**"',
     "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
     'CLANG_CXX_LIBRARY' => 'libc++',
   }

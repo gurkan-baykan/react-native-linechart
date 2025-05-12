@@ -1,6 +1,6 @@
 {
   "name": "@baykan/react-native-linechart-native",
-  "version": "1.4.4",
+  "version": "1.6.1",
   "description": "A performant Line Chart for React Native using Fabric",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
