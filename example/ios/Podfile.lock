@@ -1528,7 +1528,7 @@ PODS:
     - React-logger (= 0.78.2)
     - React-perflogger (= 0.78.2)
     - React-utils (= 0.78.2)
-  - ReactNativeLineChartNative (1.5.7):
+  - ReactNativeLineChartNative (1.6.6):
     - DGCharts (~> 5.1.0)
     - DoubleConversion
     - glog
@@ -1835,7 +1835,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 4893bde33952f997a323eb1a1ee87a72764018ff
   ReactCodegen: 31f8d982d351eb4dbf3af220f363c7398ae667c8
   ReactCommon: 0adf8f24a3415b6815613bad362d390726b33fc7
-  ReactNativeLineChartNative: b8803554abd46b97d3c494173a61f96364604b3e
+  ReactNativeLineChartNative: db8a55aca09f0cfaeae511524daa75dd44db0aba
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 6eb60fc2c0eef63e7d2ef4a56e0a3353534143a2
 

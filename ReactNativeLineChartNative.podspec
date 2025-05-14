@@ -15,7 +15,8 @@ Pod::Spec.new do |s|
 
   s.source_files = [
     "ios/Source/**/*.{h,m,mm,swift}",  
-    "ios/generated/build/generated/ios/react/renderer/components/LineChartSpec"
+    "ios/generated/build/generated/ios/react/renderer/components/LineChartSpec/**/*.{h,mm,cpp,c,m}"
+
   ]
   s.dependency "React"
   s.dependency "React-Core"
@@ -38,7 +39,7 @@ Pod::Spec.new do |s|
    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
    'DEFINES_MODULE' => 'YES',
     'SWIFT_OBJC_INTERFACE_HEADER_NAME' => 'ReactNativeLineChartNative-Swift.h',
-    "HEADER_SEARCH_PATHS" => '"$(PODS_TARGET_SRCROOT)/cpp/"/**',
+    'HEADER_SEARCH_PATHS' => '$(PODS_TARGET_SRCROOT)/ios/generated/build/generated/ios',
     "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
     'CLANG_CXX_LIBRARY' => 'libc++',
   }

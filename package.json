@@ -1,6 +1,6 @@
 {
   "name": "@baykan/react-native-linechart-native",
-  "version": "1.6.6",
+  "version": "1.6.7",
   "description": "A performant Line Chart for React Native using Fabric",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -46,7 +46,7 @@
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "release": "release-it",
     "prepublishOnly": "yarn run:codegen && bob build", 
-    "prepare": "bob build", 
+    "publish": "npm publish --access public",
     "build": "bob build",
 
     "run:codegen": "npx @react-native-community/cli codegen"
