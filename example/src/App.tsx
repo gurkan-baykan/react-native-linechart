@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { LineChartNativeComponent } from 'react-native-linechart-native';
+import { LineChartNativeComponent } from '@baykan/react-native-linechart-native';
 
 function App(): JSX.Element {
   const count = 25;

@@ -14,27 +14,31 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/gurkan-baykan/LineChart.git", :tag => "#{s.version}" }
 
   s.source_files = [
-    "ios/**/*.{h,c,cc,cpp,m,mm,swift}",  
-    "cpp/**/*.{h,cpp}",
-    "ios/generated/build/generated/ios/**/*.{h,cpp,mm}"
+    "ios/Source/**/*.{h,m,mm,swift}",  
+    "ios/generated/build/generated/ios/react/renderer/components/LineChartSpec"
   ]
-  
   s.dependency "React"
   s.dependency "React-Core"
   s.dependency "DGCharts", "~> 5.1.0"
+
   s.public_header_files = [
-    "ios/LinechartNativeExample-Bridging-Header.h",
+    "ios/Source/LinechartNativeExample-Bridging-Header.h",
   ]
   s.swift_version = '5.0'
 
-  
+  s.exclude_files = [
+    "ios/generated/build/generated/ios/RCTModulesConformingToProtocolsProvider.mm",
+    "ios/generated/build/generated/ios/RCTThirdPartyComponentsProvider.mm",
+    "ios/generated/build/generated/ios/RCTAppDependencyProvider.mm",
+  ]
+
   s.pod_target_xcconfig = {
     'SWIFT_INCLUDE_PATHS' => '$(PODS_TARGET_SRCROOT)/ios',
     'OTHER_SWIFT_FLAGS' => '-D RCT_NEW_ARCH_ENABLED',
    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
    'DEFINES_MODULE' => 'YES',
     'SWIFT_OBJC_INTERFACE_HEADER_NAME' => 'ReactNativeLineChartNative-Swift.h',
-    "HEADER_SEARCH_PATHS" => '"$(PODS_TARGET_SRCROOT)/cpp/**" "$(PODS_TARGET_SRCROOT)/ios/generated/build/generated/ios/**"',
+    "HEADER_SEARCH_PATHS" => '"$(PODS_TARGET_SRCROOT)/cpp/"/**',
     "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
     'CLANG_CXX_LIBRARY' => 'libc++',
   }
