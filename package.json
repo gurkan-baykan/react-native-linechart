@@ -1,6 +1,6 @@
 {
   "name": "@baykan/react-native-linechart-native",
-  "version": "1.6.7",
+  "version": "1.7.3",
   "description": "A performant Line Chart for React Native using Fabric",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -53,7 +53,12 @@
   },
   "keywords": [
     "react-native",
+    "line-chart",
     "ios",
+    "react-native-line-chart",
+    "native-chart",
+    "react-native-chart",
+    "chart",
     "android"
   ],
   "repository": {

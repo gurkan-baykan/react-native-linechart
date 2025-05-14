@@ -1,8 +1,8 @@
-# LineChart
+# React Native Line Chart
 
 ## 🚀 Features
 
-### ⚡ Performance-Oriented
+### ⚡ Performance-Oriented(Fast Line Chart for React Native)
 
 - ⚡ **High-speed rendering**: Charts are rendered natively with immediate response.
 - ⚡ **High FPS animations**: Smooth animations running at 60 FPS and above.
@@ -10,7 +10,7 @@
 - ⚡ **Compatible with React Native Fabric**: Uses the new architecture for low-latency communication between JS and native layers.
 - ⚡ **Fully native chart code**: All chart logic and rendering are compiled natively (Android/iOS), not JavaScript.
 
-### 🟡 User Experience & Interaction
+### 🟡 User Experience & Interaction(React Native Chart Component)
 
 - 🟡 **Smooth gesture support**: Fast, fluid interactions like pan and tap with no lag.
 - 🟡 **Seamless transition effects**: Animated transitions deliver a polished, professional feel.
@@ -47,7 +47,7 @@ Only for Ios:
 
 ```javascript
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { LineChartNativeComponent } from 'react-native-linechart-native';
+import { LineChartNativeComponent } from '@baykan/react-native-linechart-native';
 
 function App(): JSX.Element {
   const count = 25;
