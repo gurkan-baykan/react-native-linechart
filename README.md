@@ -35,9 +35,9 @@ Only for Ios:
 
 **Example Screenshots**
 
-| iOS Example                                                                                             | Android Example                                                                                             |
-| ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| <img src="https://raw.githubusercontent.com/gurkan-baykan/LineChart/main/assets/ios.png" width="300" /> | <img src="https://raw.githubusercontent.com/gurkan-baykan/LineChart/main/assets/android.png" width="300" /> |
+| iOS Example                                                                                                          | Android Example                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| <img src="https://raw.githubusercontent.com/gurkan-baykan/react-native-linechart/main/assets/ios.png" width="300" /> | <img src="https://raw.githubusercontent.com/gurkan-baykan/react-native-linechart/main/assets/android.png" width="300" /> |
 
 **Example Usage**
 
@@ -313,4 +313,4 @@ ChartEasingOptionProps: {
 
 **CoupleLineChart**
 
-<img src="https://raw.githubusercontent.com/gurkan-baykan/LineChart/main/assets/couple.png" alt="Couple Line Chart Example" width="300" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="https://raw.githubusercontent.com/gurkan-baykan/react-native-linechart/main/assets/couple.png" alt="Couple Line Chart Example" width="300" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
